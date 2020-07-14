@@ -4,9 +4,14 @@ const path = require('path')
 
 function createWindow () {
   const mainWindow = new BrowserWindow({
+    title: "Glory to Heaven",
     width: 1080,
     height: 720,
     show: false,
+    autoHideMenuBar: true,
+    customButtonsOnHover: false,
+    darkTheme: true,
+    titleBarStyle: "hiddenInset",
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     },
@@ -16,19 +21,19 @@ function createWindow () {
   let webContents = mainWindow.webContents;
     webContents.on('new-window', function(event, url){
       event.preventDefault();
-      app.shell.openExternal(url);
+      require("electron").shell.openExternal(url);
   });
 
   mainWindow.loadURL('https://glorytoheaven.tk')
   mainWindow.once('ready-to-show', () => {
-     mainWindow.show()
+    mainWindow.maximize();
+    mainWindow.show()
  })
 
 }
 
 app.whenReady().then(() => {
   createWindow()
-
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
